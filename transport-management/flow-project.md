@@ -17,3 +17,5 @@ https://tailwindcss.com/docs/installation/using-vite
 7. Buat Card untuk masing masing kendaraan di src/components/VehicleCard.jsx
 
 8. Buat Komponen Pagination supaya bisa digunakan kembali
+
+9. Buat road trip filter komponen dengan npm install react-select

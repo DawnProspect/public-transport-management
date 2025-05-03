@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 // * Import Komponen Kartu
 import VehicleCard from "../components/VehicleCard";
 import Pagination from "../components/Pagination";
+import RouteTripFilter from "../components/RouteTripFilter";
 
 // * Export default function AllVehicles
 export default function AllVehicles() {
@@ -19,6 +20,9 @@ export default function AllVehicles() {
 
     // * State untuk jumlah data per halaman
     const [itemsPerPage, setItemsPerPage] = useState(5);
+
+    // * State untuk filter
+    const [filters, setFilters] = useState({ routes:[], trips:[] })
 
     // * useEffect untuk mengambil data kendaraan dari API saat komponen dimuat
     useEffect(() => {
@@ -55,10 +59,23 @@ export default function AllVehicles() {
         fetchVehicles();
     }, []);
 
+    const filteredVehicles = vehicles.filter((vehicle) => {
+        const routeMatch =
+            filters.routes.length === 0 ||
+            filters.routes.some((r) => r.value === vehicle.relationships.route?.data?.id);
+    
+        const tripMatch =
+            filters.trips.length === 0 ||
+            filters.trips.some((t) => t.value === vehicle.relationships.trip?.data?.id);
+    
+        return routeMatch && tripMatch;
+    });
+
     const totalItems = vehicles.length;
     const startIndex = (currentPage - 1) * itemsPerPage;
     const currentVehicles = vehicles.slice(startIndex, startIndex + itemsPerPage);
 
+    // * Fungsi untuk menangani perubahan halaman dan jumlah data per halaman
     const handlePageChange = (page) => {
         if (page >= 1 && page <= Math.ceil(totalItems / itemsPerPage)) {
             setCurrentPage(page);
@@ -67,11 +84,17 @@ export default function AllVehicles() {
 
     const handleItemsPerPageChange = (newLimit) => {
         setItemsPerPage(newLimit);
-        setCurrentPage(1); // Reset ke halaman 1 jika limit berubah
+        setCurrentPage(1); // * Reset ke halaman 1 jika limit berubah
     };
 
     // * Jika loading, tampilkan pesan loading
     if (loading) return <p className="text-center py-4">🔄 Memuat data kendaraan...</p>;
+
+    // * Fungsi untuk menangani perubahan filter
+    const handleFilterChange = ({ routes, trips }) => {
+        setFilters({ routes, trips });
+        setCurrentPage(1); // * reset halaman
+    };
 
     // * Error state
     if (error) return <p className="text-red-500 text-center py-4">{error}</p>;
@@ -80,13 +103,15 @@ export default function AllVehicles() {
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4 text-center">Sistem Manajemen Armada</h1>
 
+            <RouteTripFilter onFilterChange={handleFilterChange} />
+
             {/* Komponen untuk kendaraan */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {currentVehicles.map((vehicle) => (
                     <VehicleCard key={vehicle.id} vehicle={vehicle} />
                 ))}
             </div>
-            
+
             {/* Komponen Pagination */}
             <Pagination
                 currentPage={currentPage}
