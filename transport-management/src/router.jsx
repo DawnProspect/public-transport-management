@@ -10,3 +10,5 @@ const router = createBrowserRouter([
         element: <AllVehicles />,
     }
 ])
+
+export default router
