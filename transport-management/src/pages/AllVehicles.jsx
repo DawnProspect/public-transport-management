@@ -5,13 +5,20 @@ import { Link, useNavigate } from "react-router-dom";
 
 // * Import Komponen Kartu
 import VehicleCard from "../components/VehicleCard";
+import Pagination from "../components/Pagination";
 
 // * Export default function AllVehicles
 export default function AllVehicles() {
     // * State untuk menyimpan data kendaraan, status loading, dan error
-    const [vehicles, setVehicles] = useState([]); 
+    const [vehicles, setVehicles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+
+    // * State untuk pagination
+    const [currentPage, setCurrentPage] = useState(1)
+
+    // * State untuk jumlah data per halaman
+    const [itemsPerPage, setItemsPerPage] = useState(5);
 
     // * useEffect untuk mengambil data kendaraan dari API saat komponen dimuat
     useEffect(() => {
@@ -48,6 +55,21 @@ export default function AllVehicles() {
         fetchVehicles();
     }, []);
 
+    const totalItems = vehicles.length;
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const currentVehicles = vehicles.slice(startIndex, startIndex + itemsPerPage);
+
+    const handlePageChange = (page) => {
+        if (page >= 1 && page <= Math.ceil(totalItems / itemsPerPage)) {
+            setCurrentPage(page);
+        }
+    };
+
+    const handleItemsPerPageChange = (newLimit) => {
+        setItemsPerPage(newLimit);
+        setCurrentPage(1); // Reset ke halaman 1 jika limit berubah
+    };
+
     // * Jika loading, tampilkan pesan loading
     if (loading) return <p className="text-center py-4">🔄 Memuat data kendaraan...</p>;
 
@@ -57,11 +79,22 @@ export default function AllVehicles() {
     return (
         <div className="p-4">
             <h1 className="text-2xl font-bold mb-4 text-center">Sistem Manajemen Armada</h1>
+
+            {/* Komponen untuk kendaraan */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {vehicles.map((vehicle) => (
+                {currentVehicles.map((vehicle) => (
                     <VehicleCard key={vehicle.id} vehicle={vehicle} />
                 ))}
             </div>
+            
+            {/* Komponen Pagination */}
+            <Pagination
+                currentPage={currentPage}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={handlePageChange}
+                onItemsPerPageChange={handleItemsPerPageChange}
+            />
         </div>
     );
 }

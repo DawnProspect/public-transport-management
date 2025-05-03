@@ -15,3 +15,5 @@ https://tailwindcss.com/docs/installation/using-vite
 6. Buat halaman tes dulu untuk semua halaman (sudah bekerja)
 
 7. Buat Card untuk masing masing kendaraan di src/components/VehicleCard.jsx
+
+8. Buat Komponen Pagination supaya bisa digunakan kembali
