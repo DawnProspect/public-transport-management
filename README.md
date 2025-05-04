@@ -82,20 +82,16 @@ http://localhost:5173
 
 Aplikasi ini menggunakan struktur file standar Vite dengan JavaScript sebagai berikut:
 
-src/
-|
-|components/
--Pagination.jsx  (Komponen utama untuk navigasi halaman pagination)
--RouteTripFilter.jsx (Komponen utama filter berdasarakan trip dan rute)
--VehicleCard.jsx (Komponen utama menunjukan data kendaraan dalam bentuk card)
-|
-|
-|config/
--axiosinstance.js (Bertanggung jawab untuk menghubungkan backend dengan bantuan Axios)
-|
-|
-|pages/
--AllVehicles.jsx (Halaman utama yang akan menunjukan semua komponen maupun list data kendaraan dari backend)
+1. src/components/
+- Pagination.jsx  (Komponen utama untuk navigasi halaman pagination)
+- RouteTripFilter.jsx (Komponen utama filter berdasarakan trip dan rute)
+- VehicleCard.jsx (Komponen utama menunjukan data kendaraan dalam bentuk card)
+
+2. config/
+- axiosinstance.js (Bertanggung jawab untuk menghubungkan backend dengan bantuan Axios)
+
+3. pages/
+- AllVehicles.jsx (Halaman utama yang akan menunjukan semua komponen maupun list data kendaraan dari backend)
 
 
 ## Tech Stack Yang Digunakan
