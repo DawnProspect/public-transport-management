@@ -18,4 +18,6 @@ https://tailwindcss.com/docs/installation/using-vite
 
 8. Buat Komponen Pagination supaya bisa digunakan kembali
 
-9. Buat road trip filter komponen dengan npm install react-select
+9. Buat road trip filter komponen dengan npm install react-select (road trip filter masih tidak bekerja filternya)
+
+10. Mulai buat pop up pakai react-modal
